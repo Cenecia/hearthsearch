@@ -1,0 +1,48 @@
+body {
+  background-color: #2B3856;
+  color: #fff;
+}
+
+label {
+  color: #000;
+  margin-right: 5px;
+}
+
+.Global {
+  text-align: center;
+  padding: 10px;
+}
+
+.localeSelect {
+  max-width: 100px;
+  margin-right: 10px;
+}
+
+/* Gallery Styles */
+.hscard {
+  display: inline-block;
+  width: 315px;
+  height: 475px;
+  margin: 10px;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+}
+
+.hscard-img {
+  width: 315px;
+  height: 475px;
+  object-fit: cover;
+  position: absolute;
+}
+
+.main {
+  background-color: #c0c0c0;
+  border-radius: 8px;
+  color: #000;
+}
+
+.test {
+  text-align: bottom;
+  vertical-align: bottom;
+}
