@@ -1,11 +1,17 @@
 body {
   background-color: #2B3856;
   color: #fff;
+  font-family: 'Berkshire Swash', cursive;
+}
+
+h2 {
+
 }
 
 label {
   color: #000;
   margin-right: 5px;
+  padding-top:5px;
 }
 
 .Global {
