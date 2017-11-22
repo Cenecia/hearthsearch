@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FormGroup, FormControl, InputGroup, Glyphicon, ControlLabel, Checkbox } from 'react-bootstrap';
+import { FormGroup, FormControl, InputGroup, Glyphicon, ControlLabel, Checkbox, Button, Well, Collapse } from 'react-bootstrap';
 import Gallery from './Gallery';
 import Keys from '../keys';
 
@@ -11,6 +11,8 @@ class Global extends Component {
       locale: "enUS",
       golden: false,
       playerClass: "",
+      advFilt: false,
+      manaCost: "",
       items: []
     }
   }
@@ -18,13 +20,14 @@ class Global extends Component {
   search() {
     let myHeaders = new Headers();
     myHeaders.append("X-Mashape-Key", Keys.MashapeKey);
-    //console.log(Keys.key);
     const BASE_URL = 'https://omgvamp-hearthstone-v1.p.mashape.com/cards/search/';
     fetch(`${BASE_URL}${this.state.query}?collectible=1&locale=${this.state.locale}`, { method: 'GET', headers: myHeaders})
       .then(response => response.json())
       .then(json => {
-        let { items } = json;
-        this.setState({items: json})
+        this.setState({items: json.filter((card) => {
+          return (this.state.playerClass == "" || card.playerClass == this.state.playerClass)
+              && (this.state.manaCost == "" || card.cost == this.state.manaCost || (this.state.manaCost == "7" && card.cost >= 7));
+        })})
       });
   }
 
@@ -135,6 +138,42 @@ class Global extends Component {
                 </InputGroup.Addon>
               </InputGroup>
             </FormGroup>
+            <div className="row">
+              <Button className="pull-right btn-primary" onClick={() => this.setState({ advFilt: !this.state.advFilt })}>
+                More Filters
+              </Button>
+            </div>
+            <div className="row">
+              <Collapse in={this.state.advFilt}>
+                <div className="row">
+                  <div className="col-xs-12 col-sm-4">
+                    <FormGroup controlId="manaCost">
+                      <ControlLabel className="pull-left">Cost:</ControlLabel>
+                      <FormControl
+                        className="localeSelect pull-left"
+                        componentClass="select"
+                        placeholder="select"
+                        onChange={event => {
+                          this.setState({manaCost: event.target.value});
+                          setTimeout(() => this.search(), 500);
+                          }
+                        }
+                      >
+                        <option value="">Any</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7+</option>
+                      </FormControl>
+                    </FormGroup>
+                  </div>
+                </div>
+              </Collapse>
+            </div>
           </div>
         </div>
         <div className="container main">
