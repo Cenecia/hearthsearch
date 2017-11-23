@@ -15,6 +15,9 @@ class Global extends Component {
       manaCost: "",
       health: "",
       attack: "",
+      minions: true,
+      spells: true,
+      weapons: true,
       items: []
     }
   }
@@ -30,7 +33,12 @@ class Global extends Component {
           return (this.state.playerClass == "" || card.playerClass == this.state.playerClass)
               && (this.state.manaCost == "" || card.cost == this.state.manaCost || (this.state.manaCost == "10" && card.cost >= 10))
               && (this.state.health == "" || card.health == this.state.health  || (this.state.health == "12" && card.health >= 12))
-              && (this.state.attack == "" || card.attack == this.state.attack  || (this.state.attack == "12" && card.attack >= 12));
+              && (this.state.attack == "" || card.attack == this.state.attack  || (this.state.attack == "12" && card.attack >= 12))
+              && (
+                  (this.state.minions && card.type == "Minion")
+                  || (this.state.spells && card.type == "Spell")
+                  || (this.state.weapons && card.type == "Weapon")
+              );
         })})
       });
   }
@@ -148,97 +156,143 @@ class Global extends Component {
               </Button>
             </div>
             <Collapse in={this.state.advFilt}>
-              <div className="row">
-                <div className="col-xs-12 col-sm-4">
-                  <FormGroup controlId="manaCost">
-                    <ControlLabel className="pull-left">Cost:</ControlLabel>
-                    <FormControl
-                      className="localeSelect pull-left"
-                      componentClass="select"
-                      placeholder="select"
-                      onChange={event => {
-                        this.setState({manaCost: event.target.value});
-                        setTimeout(() => this.search(), 500);
+              <div>
+                <div className="row">
+                  <div className="col-xs-12 col-sm-4">
+                    <FormGroup controlId="manaCost">
+                      <ControlLabel className="pull-left">Cost:</ControlLabel>
+                      <FormControl
+                        className="localeSelect pull-left"
+                        componentClass="select"
+                        placeholder="select"
+                        onChange={event => {
+                          this.setState({manaCost: event.target.value});
+                          setTimeout(() => this.search(), 500);
+                          }
                         }
-                      }
-                    >
-                      <option value="">Any</option>
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10+</option>
-                    </FormControl>
-                  </FormGroup>
+                      >
+                        <option value="">Any</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10+</option>
+                      </FormControl>
+                    </FormGroup>
+                  </div>
+                  <div className="col-xs-12 col-sm-4">
+                    <FormGroup controlId="health">
+                      <ControlLabel className="pull-left">Health:</ControlLabel>
+                      <FormControl
+                        className="localeSelect pull-left"
+                        componentClass="select"
+                        placeholder="select"
+                        onChange={event => {
+                          this.setState({health: event.target.value});
+                          setTimeout(() => this.search(), 500);
+                          }
+                        }
+                      >
+                        <option value="">Any</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12+</option>
+                      </FormControl>
+                    </FormGroup>
+                  </div>
+                  <div className="col-xs-12 col-sm-4">
+                    <FormGroup controlId="attack">
+                      <ControlLabel className="pull-left">Attack:</ControlLabel>
+                      <FormControl
+                        className="localeSelect pull-left"
+                        componentClass="select"
+                        placeholder="select"
+                        onChange={event => {
+                          this.setState({attack: event.target.value});
+                          setTimeout(() => this.search(), 500);
+                          }
+                        }
+                      >
+                        <option value="">Any</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12+</option>
+                      </FormControl>
+                    </FormGroup>
+                  </div>
                 </div>
-                <div className="col-xs-12 col-sm-4">
-                  <FormGroup controlId="health">
-                    <ControlLabel className="pull-left">Health:</ControlLabel>
-                    <FormControl
-                      className="localeSelect pull-left"
-                      componentClass="select"
-                      placeholder="select"
-                      onChange={event => {
-                        this.setState({health: event.target.value});
-                        setTimeout(() => this.search(), 500);
+                <div className="row">
+                  <div className="col-xs-4">
+                    <FormGroup>
+                      <Checkbox
+                        defaultChecked={true}
+                        onChange={event => {
+                          this.setState({minions: event.target.checked});
+                          setTimeout(() => this.search(), 500);
                         }
                       }
-                    >
-                      <option value="">Any</option>
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12+</option>
-                    </FormControl>
-                  </FormGroup>
-                </div>
-                <div className="col-xs-12 col-sm-4">
-                  <FormGroup controlId="attack">
-                    <ControlLabel className="pull-left">Attack:</ControlLabel>
-                    <FormControl
-                      className="localeSelect pull-left"
-                      componentClass="select"
-                      placeholder="select"
-                      onChange={event => {
-                        this.setState({attack: event.target.value});
-                        setTimeout(() => this.search(), 500);
+                      >
+                        Minions
+                      </Checkbox>
+                    </FormGroup>
+                  </div>
+                  <div className="col-xs-4">
+                    <FormGroup>
+                      <Checkbox
+                        defaultChecked={true}
+                        onChange={event => {
+                          this.setState({spells: event.target.checked});
+                          setTimeout(() => this.search(), 500);
                         }
                       }
-                    >
-                      <option value="">Any</option>
-                      <option value="0">0</option>
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                      <option value="11">11</option>
-                      <option value="12">12+</option>
-                    </FormControl>
-                  </FormGroup>
+                      >
+                        Spells
+                      </Checkbox>
+                    </FormGroup>
+                  </div>
+                  <div className="col-xs-4">
+                    <FormGroup>
+                      <Checkbox
+                        defaultChecked={true}
+                        onChange={event => {
+                          this.setState({weapons: event.target.checked});
+                          setTimeout(() => this.search(), 500);
+                        }
+                      }
+                      >
+                        Weapons
+                      </Checkbox>
+                    </FormGroup>
+                  </div>
                 </div>
               </div>
             </Collapse>
