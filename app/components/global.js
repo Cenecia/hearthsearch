@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { FormGroup, FormControl, InputGroup, Glyphicon, ControlLabel, Checkbox, Button, Well, Collapse } from 'react-bootstrap';
-import Gallery from './Gallery';
+import Gallery from './gallery';
 import Keys from '../keys';
 
 class Global extends Component {
